@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QLineEdit>
+#include <QDoubleSpinBox>
+
 #include <QDateTime>
 #include <cmath>
 
@@ -21,6 +24,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(reader, &TemperatureReader::dataFetched,
             this, &MainWindow::insertNewData);
 
+    connect(ui->cityName, &QLineEdit::editingFinished,
+            this, &MainWindow::updateLocation);
+
+    connect(ui->countryCode, &QLineEdit::editingFinished,
+            this, &MainWindow::updateLocation);
+
+    connect(ui->refreshTime, &QDoubleSpinBox::editingFinished,
+            this, &MainWindow::updateRefreshTime);
+
     reader->fetchData();
     updater->start();
 }
@@ -34,5 +46,15 @@ void MainWindow::insertNewData(const QPair<double, double> &data)
 {
     ui->temperatureChart->append(data.first, data.second);
     qDebug() << data.first << ": " << data.second;
+}
+
+void MainWindow::updateLocation()
+{
+    reader->setLocation(ui->cityName->text(), ui->countryCode->text());
+}
+
+void MainWindow::updateRefreshTime()
+{
+    updater->setInterval(ui->refreshTime->value() * 1000);
 }
 
