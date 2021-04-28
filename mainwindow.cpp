@@ -44,7 +44,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::insertNewData(const QPair<double, double> &data)
 {
-    ui->temperatureChart->append(data.first, data.second);
+    if(!reader->hasError()) {
+        ui->temperatureChart->append(data.first, data.second);
+        ui->errorLabel->setText("");
+    }
+    else {
+        ui->errorLabel->setText("Error! Invalid parameters.");
+    }
 }
 
 void MainWindow::updateLocation()
