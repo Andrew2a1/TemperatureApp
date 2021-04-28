@@ -1,2 +1,2 @@
 # TemperatureApp
-Qt5 application for showing temperature in choosen location over time
+Qt5 application for showing temperature in chosen location over time
