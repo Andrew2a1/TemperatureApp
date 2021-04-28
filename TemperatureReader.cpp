@@ -17,7 +17,7 @@ TemperatureReader::TemperatureReader(QObject *parent) :
             this, &TemperatureReader::replyFinished);
 
     setLocation("Warsaw", "PL");
-    generateAppid();
+    generateAppId();
 }
 
 void TemperatureReader::setLocation(const QString &city,
@@ -36,7 +36,7 @@ void TemperatureReader::fetchData()
     manager->get(QNetworkRequest(url));
 }
 
-void TemperatureReader::generateAppid()
+void TemperatureReader::generateAppId()
 {
     QString id = "9K7X\\OFWJJ";
     appid = "Z)\x04""9dz~4,z\x0b*U98~vc+|\n(T9?\x7fr4y{[}";

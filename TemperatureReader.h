@@ -31,7 +31,7 @@ public slots:
     void fetchData();
 
 private:
-    void generateAppid();
+    void generateAppId();
 
 private slots:
     void replyFinished(QNetworkReply *reply);
