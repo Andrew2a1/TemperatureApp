@@ -17,6 +17,7 @@ TemperatureReader::TemperatureReader(QObject *parent) :
             this, &TemperatureReader::replyFinished);
 
     setLocation("Warsaw", "PL");
+    generateAppid();
 }
 
 void TemperatureReader::setLocation(const QString &city,
@@ -27,13 +28,22 @@ void TemperatureReader::setLocation(const QString &city,
 
 void TemperatureReader::fetchData()
 {
-    static const QString API_KEY = "cb3a858cf02abad104a63ccac04c31b6";
     const QString urlString = "http://api.openweathermap.org/data/"
                               "2.5/weather?q=%1&"
                               "appid=%2";
 
-    QUrl url(urlString.arg(location, API_KEY));
+    QUrl url(urlString.arg(location, appid));
     manager->get(QNetworkRequest(url));
+}
+
+void TemperatureReader::generateAppid()
+{
+    QString id = "9K7X\\OFWJJ";
+    appid = "Z)\x04""9dz~4,z\x0b*U98~vc+|\n(T9?\x7fr4y{[}";
+
+    for(int i = 0; i < appid.size(); ++i)
+        appid[i] = appid[i].toLatin1() ^
+                    id[i % id.size()].toLatin1();
 }
 
 bool TemperatureReader::hasError()
