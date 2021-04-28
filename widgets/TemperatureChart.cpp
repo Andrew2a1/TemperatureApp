@@ -32,6 +32,8 @@ void TemperatureChart::append(double time, double temperature)
         axisY->setMax(temperature);
     if(temperature < axisY->min())
         axisY->setMin(temperature);
+
+    chart->setTitle(QString("Current temperature: %1°C").arg(temperature));
 }
 
 void TemperatureChart::createLayout()
@@ -54,7 +56,6 @@ void TemperatureChart::createLayout()
     series->attachAxis(axisY);
 
     chart->legend()->hide();
-    chart->setTitle("Temperature in Warsaw");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(chartView);

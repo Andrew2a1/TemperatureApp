@@ -27,6 +27,9 @@ public:
 
 private slots:
     void insertNewData(const QPair<double, double> &data);
+    void updateLocation();
+    void updateRefreshTime();
+
 };
 
 #endif // MAINWINDOW_H
