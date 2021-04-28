@@ -6,12 +6,15 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QChart>
 #include <QtCharts/QValueAxis>
+#include <QtCharts/QDateTimeAxis>
+
+#include <QDateTime>
 
 TemperatureChart::TemperatureChart(QWidget *parent) :
     QWidget(parent),
     chart(new QChart),
     series(new QLineSeries),
-    axisX(new QValueAxis),
+    axisX(new QDateTimeAxis),
     axisY(new QValueAxis)
 {
     createLayout();
@@ -19,17 +22,16 @@ TemperatureChart::TemperatureChart(QWidget *parent) :
 
 void TemperatureChart::append(double time, double temperature)
 {
-    series->append(time, temperature);
+    QDateTime datetime = QDateTime::currentDateTime();
+    series->append(datetime.toMSecsSinceEpoch(), temperature);
 
-    if(time > axisX->max())
-        axisX->setMax(time);
+    if(datetime > axisX->max())
+        axisX->setMax(datetime);
+
     if(temperature > axisY->max())
         axisY->setMax(temperature);
-}
-
-void TemperatureChart::setStartTime(double time)
-{
-    axisX->setMin(time);
+    if(temperature < axisY->min())
+        axisY->setMin(temperature);
 }
 
 void TemperatureChart::createLayout()
@@ -38,16 +40,16 @@ void TemperatureChart::createLayout()
     chartView->setMinimumSize(800, 600);
     chart->addSeries(series);
 
-    axisX->setRange(0, 100);
-    axisX->setLabelFormat("%g");
+    axisX->setTickCount(1);
+    axisX->setRange(QDateTime::currentDateTime(),
+                    QDateTime::currentDateTime().addSecs(60));
+    axisX->setFormat("HH:mm:ss");
     axisX->setTitleText("Time");
-
-    axisY->setRange(-80, 80);
-    axisY->setTitleText("Temperature");
-
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
+    axisY->setRange(-20, 40);
+    axisY->setTitleText("Temperature");
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 

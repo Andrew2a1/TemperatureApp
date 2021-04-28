@@ -9,27 +9,30 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    const QDateTime datetime = QDateTime::currentDateTime();
-    auto time = datetime.toMSecsSinceEpoch();
-    ui->temperatureChart->setStartTime(time);
+    reader = new TemperatureReader(this);
 
     updater = new QTimer(this);
     updater->setSingleShot(false);
-    updater->setInterval(200);
+    updater->setInterval(5000);
 
     connect(updater, &QTimer::timeout,
-            this, [=]() {
-        const QDateTime datetime = QDateTime::currentDateTime();
-        auto time = datetime.toMSecsSinceEpoch();
-        ui->temperatureChart->append(time, 40*sin(time/1000.0));
-    });
+            reader, &TemperatureReader::fetchData);
 
+    connect(reader, &TemperatureReader::dataFetched,
+            this, &MainWindow::insertNewData);
+
+    reader->fetchData();
     updater->start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::insertNewData(const QPair<double, double> &data)
+{
+    ui->temperatureChart->append(data.first, data.second);
+    qDebug() << data.first << ": " << data.second;
 }
 
