@@ -13,6 +13,7 @@ class TemperatureReader : public QObject
 private:
     bool errorFlag = false;
 
+    QString appid;
     QString location;
     QNetworkAccessManager *manager;
 
@@ -28,6 +29,9 @@ signals:
 
 public slots:
     void fetchData();
+
+private:
+    void generateAppid();
 
 private slots:
     void replyFinished(QNetworkReply *reply);
