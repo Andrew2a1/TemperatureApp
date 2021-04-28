@@ -1,7 +1,5 @@
 #include "TemperatureReader.h"
 
-#include <QtDebug>
-
 #include <QtNetwork/QNetworkReply>
 #include <QUrl>
 

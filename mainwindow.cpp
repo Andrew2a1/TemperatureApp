@@ -45,7 +45,6 @@ MainWindow::~MainWindow()
 void MainWindow::insertNewData(const QPair<double, double> &data)
 {
     ui->temperatureChart->append(data.first, data.second);
-    qDebug() << data.first << ": " << data.second;
 }
 
 void MainWindow::updateLocation()
