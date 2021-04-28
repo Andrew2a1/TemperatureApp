@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QPair>
+
+#include "TemperatureReader.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,9 +19,14 @@ private:
     Ui::MainWindow *ui;
     QTimer *updater;
 
+    TemperatureReader *reader;
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void insertNewData(const QPair<double, double> &data);
 };
 
 #endif // MAINWINDOW_H
